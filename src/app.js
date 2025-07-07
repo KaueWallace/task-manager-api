@@ -1,9 +1,16 @@
 const express = require('express');
+const { sequelize } = require('./db/connect')
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.DB_PORT;
 
-app.get("/", (req, res) => {
+app.get("/", async (req, res) => {
+  try {
+    await sequelize.authenticate();
+    console.log('Conexão estabelecida com sucesso.');
+  } catch (error) {
+    console.error('Erro ao tentar conexão com o banco: ', error);
+  }
     res.status(200).send("SERVIDOR FUNCIONANDO")
 })
 
