@@ -1,19 +1,20 @@
 const express = require('express');
-const { sequelize } = require('./db/connect')
+const { route } = require('./routes/usuario')
+require('dotenv').config()
 
 const app = express();
-const PORT = process.env.DB_PORT;
+const PORT = process.env.PORT;
+
+app.use(express.json(), route)
 
 app.get("/", async (req, res) => {
-  try {
-    await sequelize.authenticate();
-    console.log('Conexão estabelecida com sucesso.');
-  } catch (error) {
-    console.error('Erro ao tentar conexão com o banco: ', error);
-  }
     res.status(200).send("SERVIDOR FUNCIONANDO")
 })
 
 app.listen(PORT, () => {
     console.log(`SERVIDOR NO AR NA PORTA ${PORT}`)
 })
+
+module.exports = {
+    app
+}
