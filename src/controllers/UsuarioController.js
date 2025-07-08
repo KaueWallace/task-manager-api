@@ -1,12 +1,30 @@
+const { Tarefa } = require('../models/Tarefa')
 const { Usuario } = require('../models/Usuario')
 
 class UsuarioController {
+    static async #getUsuarios(tarefaIncluida){
+        const consulta = tarefaIncluida ? { include: Tarefa } : {}
+        const usuarios = await Usuario.findAll(consulta)
+        return usuarios
+    }
+
+
     static async listarUsuarios(req, res) {
         try {
-            const usuarios = await Usuario.findAll()
+            const usuarios = await UsuarioController.#getUsuarios(false)
+            console.log(usuarios)
             res.status(200).json(usuarios)
         } catch(error){
-            res.status(401).json({ message: 'Erro ao listar usuários!' })
+            res.status(500).json({ message: 'Erro ao listar usuários!' })
+        }
+    }
+
+    static async listarUsuariosComTarefas(req, res){
+        try {
+            const usuarios = await UsuarioController.#getUsuarios(true)
+            res.status(200).json(usuarios)
+        } catch(error){
+            res.status(500).json({ message: 'Erro ao listar usuários com tarefas!' })
         }
     }
 
