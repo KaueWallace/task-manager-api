@@ -1,58 +1,67 @@
-# task-manager-api
+# 📌 task-manager-api
 API DE GERENCIAMENTO DE TAREFAS
-- Criar uma API simples que permita o cadastro de usuários e o gerenciamento de suas tarefas. Cada usuário pode possui várias tarefas, e cada tarefa tem um status que representa seu progresso.
+- API simples que permite o cadastro de usuários e o gerenciamento de suas tarefas.
 
-
-TECNOLOGIAS
+🚀 TECNOLOGIAS
 - Node.js com Express
-- Sequelize com MySQL (Não precisa usar migrations) 
+- Sequelize com MySQL 
 
-ROTAS RELACIONADAS AO USUÁRIO
-[POST]   /usuario        - Criar um novo usuário
-[GET]    /usuarios       - Listar todos os usuários
-[GET]    /usuario/:id    - Buscar um usuário por ID
-[PUT]    /usuario/:id    - Atualizar um usuário (nome, email)
-[DELETE] /usuario/:id	 - Remover um usuário
+👤 ROTAS RELACIONADAS AO USUÁRIO
+[POST]   /usuario           - Criar um novo usuário
+[GET]    /usuarios          - Listar todos os usuários
+[GET]    /usuariosTarefas   - Lista usuários e suas tarefas
+[GET]    /usuario/:id       - Buscar um usuário por ID
+[PUT]    /usuario/:id       - Atualizar um usuário (nome, email)
+[DELETE] /usuario/:id	      - Remover um usuário
 
-ROTAS RELACIONADAS A TAREFA
-[POST]   /tarefa        - Criar uma nova tarefa (relacionada a um usuarioId)
-[GET]    /tarefas       - Listar todas as tarefas
-[GET]    /tarefa/:id    - Obter uma tarefa específica
-[PUT]    /tarefa/:id    - Atualizar uma tarefa (título, descrição ou status)
-[DELETE] /tarefa/:id    – Remover uma tarefa
-
-
-IMPLEMENTAR PAGINAÇÃO E FILTRO PARA USUÁRIOS
-Parâmetros de query:
-  - page  (padrão: 1)
-  - limit (padrão: 4)
-  - nome  (filtrar usuários pelo nome)
-  - email (filtrar usuários pelo email)
-
-    Exemplo 1 (paginação): /usuarios?page=2&limit=5
-    Exemplo 2 (filtro): /usuarios?nome=joao
-    Exemplo 3 (filtro + paginação): /usuarios?page=1&limit=3&email=fulano@gmail.com
+📋 ROTAS RELACIONADAS A TAREFA
+[POST]   /tarefa            - Criar uma nova tarefa (relacionada a um usuarioId)
+[GET]    /tarefas           - Listar todas as tarefas
+[GET]    /tarefa/:id        - Obter uma tarefa específica
+[PUT]    /tarefa/:id        - Atualizar uma tarefa (título, descrição ou status)
+[DELETE] /tarefa/:id        – Remover uma tarefa
 
 
-IMPLEMENTAR PAGINAÇÃO PARA TAREFAS
-Parâmetros Query:
-  - page  (padrão: 1)
-  - limit (padrão: 4)
-  - status (filtrar tarefas por status) - Valores permitidos: PENDENTE, EM_ANDAMENTO, CONCLUIDA
+🔍 Paginação e Filtros
 
-    Exemplo 1 (paginação): /tarefas?page=1&limit=4
-    Exemplo 2 (filtro):  /tarefas?status=CONCLUIDA
-    Exemplo 3 (ambos): /tarefas?page=2&limit=5&status=PENDENTE
+👤 Usuários
+A rota de listagem de usuários (GET /usuarios) suporta paginação e filtros via parâmetros de query:
+
+Parâmetros disponíveis:
+page — Página atual (padrão: 1)
+limit — Quantidade de registros por página (padrão: 4)
+nome — Filtra usuários pelo nome (busca parcial)
+email — Filtra usuários pelo e-mail (busca parcial)
+
+Exemplos de uso:
+Paginação:
+GET /usuarios?page=2&limit=5
+
+Filtro por nome:
+GET /usuarios?nome=joao
+
+Filtro por e-mail com paginação:
+GET /usuarios?page=1&limit=3&email=fulano@gmail.com
 
 
-ESTRUTURA DO MODELO DE USUÁRIO
-CAMPOS - id, nome, email
+📋 Tarefas
+A rota de listagem de tarefas (GET /tarefas) também suporta paginação e filtro por status.
 
-ESTRUTURA DO MODELO DE TAREFA
-CAMPOS -  id, titulo, descricao, status (valores: PENDENTE, EM_ANDAMENTO, CONCLUIDA), usuarioID
+Parâmetros disponíveis:
+page — Página atual (padrão: 1)
+limit — Quantidade de registros por página (padrão: 4)
+status — Filtra tarefas pelo status
+
+Valores permitidos: PENDENTE, EM_ANDAMENTO, CONCLUIDA
+
+Exemplos de uso:
+Paginação:
+GET /tarefas?page=1&limit=4
+
+Filtro por status:
+GET /tarefas?status=CONCLUIDA
+
+Filtro com paginação:
+GET /tarefas?page=2&limit=5&status=PENDENTE
 
 
-LINK DA DOCUMENTAÇÃO DO SEQUELIZE: https://sequelize.org/docs/v6/getting-started/
-
-OBSERVAÇÃO
-Apresentar o funcionamento do sistema pelo postman
