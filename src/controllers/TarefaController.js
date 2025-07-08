@@ -1,28 +1,19 @@
+const { Op } = require("sequelize");
 const { Tarefa } = require("../models/Tarefa")
+const { ListagemService } = require('../services/listagemService')
 
 class TarefaController {
     static async listarTarefas(req, res){
         try {
-            let page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 4;
-            
-            const quantidadeTarefas = await Tarefa.count() 
-            const totalDePaginas = Math.ceil(quantidadeTarefas/ limit)
-
-            if (page < 1 || page > totalDePaginas){
-                page = 1
-            }
-
-            const startIndex = (page - 1) * limit
-
-            const tarefas = await Tarefa.findAll({ offset: startIndex, limit: limit })
-            res.status(200).json({ 
-                pagina_atual: page, 
-                total_paginas: totalDePaginas,
-                total_tarefas: quantidadeTarefas,
-                tarefas
-            })
+            const tarefas = await ListagemService.listagemComPaginacao(
+                Tarefa, 
+                'tarefas', 
+                ['status'], 
+                req.query
+            )
+            res.status(200).json(tarefas)
         } catch(error){
+            console.log('erro ao listar tarefa', error)
             res.status(500).json({ message: 'Erro ao listar tarefas!' })
         }
     }

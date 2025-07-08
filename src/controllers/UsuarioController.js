@@ -1,45 +1,32 @@
 const { Tarefa } = require('../models/Tarefa')
 const { Usuario } = require('../models/Usuario')
+const { ListagemService } = require('../services/listagemService')
 
 class UsuarioController {
-    static async #getUsuarios(tarefaIncluida, page, limit){
-        const quantidadeUsuario = await Usuario.count() 
-        const totalDePaginas = Math.ceil(quantidadeUsuario / limit)
-        
-        if (page < 1 || page > totalDePaginas){
-            page = 1
-        }
-        const startIndex = (page - 1) * limit
-
-        const consulta = tarefaIncluida ? { include: Tarefa } : {}
-        const usuarios = await Usuario.findAll({...consulta, offset: startIndex, limit: limit})
-        return { 
-            pagina_atual: page,
-            total_paginas: totalDePaginas,
-            total_usuarios: quantidadeUsuario,
-            usuarios 
-        }
-    }
-
-
     static async listarUsuarios(req, res) {
         try {
-            let page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 4;
-
-            const usuarios = await UsuarioController.#getUsuarios(false, page, limit)
+            const usuarios = await ListagemService.listagemComPaginacao(
+                Usuario, 
+                'usuarios',
+                ['nome', 'email'], 
+                req.query
+            )
             res.status(200).json(usuarios)
         } catch(error){
+            console.error(error)
             res.status(500).json({ message: 'Erro ao listar usuários!' })
         }
     }
 
     static async listarUsuariosComTarefas(req, res){
         try {
-            let page = parseInt(req.query.page) || 1;
-            const limit = parseInt(req.query.limit) || 4;
-
-            const usuarios = await UsuarioController.#getUsuarios(true, page, limit)
+            const usuarios = await ListagemService.listagemComPaginacao(
+                Usuario, 
+                'usuarios',
+                ['nome', 'email'], 
+                req.query,
+                Tarefa
+            )
             res.status(200).json(usuarios)
         } catch(error){
             res.status(500).json({ message: 'Erro ao listar usuários com tarefas!' })
