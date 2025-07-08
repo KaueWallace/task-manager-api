@@ -1,11 +1,27 @@
 const { Tarefa } = require("../models/Tarefa")
-const { Usuario } = require("../models/Usuario")
 
 class TarefaController {
     static async listarTarefas(req, res){
         try {
-            const tarefas = await Tarefa.findAll()
-            res.status(200).json(tarefas)
+            let page = parseInt(req.query.page) || 1;
+            const limit = parseInt(req.query.limit) || 4;
+            
+            const quantidadeTarefas = await Tarefa.count() 
+            const totalDePaginas = Math.ceil(quantidadeTarefas/ limit)
+
+            if (page < 1 || page > totalDePaginas){
+                page = 1
+            }
+
+            const startIndex = (page - 1) * limit
+
+            const tarefas = await Tarefa.findAll({ offset: startIndex, limit: limit })
+            res.status(200).json({ 
+                pagina_atual: page, 
+                total_paginas: totalDePaginas,
+                total_tarefas: quantidadeTarefas,
+                tarefas
+            })
         } catch(error){
             res.status(500).json({ message: 'Erro ao listar tarefas!' })
         }
