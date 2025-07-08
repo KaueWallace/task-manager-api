@@ -34,7 +34,7 @@ class UsuarioController {
             const usuario = await Usuario.findByPk(id)
             res.status(200).json(usuario)
         } catch(error){
-            res.status(401).json({ message: 'Erro ao buscar usuario por id!' })
+            res.status(500).json({ message: 'Erro ao buscar usuario por id!' })
         }
     }
 
@@ -44,7 +44,7 @@ class UsuarioController {
             const novoUsuario = await Usuario.create(dadosNovoUsuario)
             res.status(201).json({ messagem: 'Usuário criado com sucesso!', usuario: novoUsuario })
         } catch (error) {
-            res.status(400).json({ message: 'Erro ao criar usuário!' })
+            res.status(500).json({ message: 'Erro ao criar usuário!' })
         }
     }
 
@@ -57,7 +57,7 @@ class UsuarioController {
             })
             res.status(200).json({ messagem: 'Usuário atualizado com sucesso!'})
         } catch (error) {
-            res.status(400).json({ message: 'Erro ao atualizar usuário!' })
+            res.status(500).json({ message: 'Erro ao atualizar usuário!' })
         }
     }
 
@@ -69,7 +69,7 @@ class UsuarioController {
             })
             res.status(200).json({ messagem: 'Usuário deletado com sucesso!'})
         } catch (error) {
-            res.status(400).json({ message: 'Erro ao deletar usuário!' })
+            res.status(500).json({ message: 'Erro ao deletar usuário!' })
         }
     }
 

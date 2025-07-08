@@ -7,7 +7,7 @@ class TarefaController {
             const tarefas = await Tarefa.findAll()
             res.status(200).json(tarefas)
         } catch(error){
-            res.status(401).json({ message: 'Erro ao listar tarefas!' })
+            res.status(500).json({ message: 'Erro ao listar tarefas!' })
         }
     }
 
@@ -17,7 +17,7 @@ class TarefaController {
             const tarefa = await Tarefa.findByPk(id)
             res.status(200).json(tarefa)
         } catch (error) {
-            res.status(400).json({ messagem: 'Erro ao buscar tarefa por id!'})
+            res.status(500).json({ messagem: 'Erro ao buscar tarefa por id!'})
         }
     }
 
